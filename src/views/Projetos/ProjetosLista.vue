@@ -21,11 +21,14 @@
                     <td>{{ projeto.id }}</td>
                     <td>{{ projeto.nome }}</td>
                     <td>
-                        <router-link :to="{ name: 'projetos.edit', params: { id: projeto.id } }">
+                        <router-link :to="{ name: 'projetos.edit', params: { id: projeto.id } }" class="button">
                             <span class="icon is-small">
                                 <i class="fas fa-pencil-alt"></i>
                             </span>
                         </router-link>
+                        <button class="button ml-2 is-danger" @click="excluirProjeto(projeto.id)">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -36,6 +39,8 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store';
+import { EXCLUIR_PROJETO } from '@/store/tipo-mutacoes';
+import { RouterLink } from 'vue-router';
 export default defineComponent({
     name: 'ProjetosLista',
     data() {
@@ -43,11 +48,16 @@ export default defineComponent({
             nome_projeto: '',
         }
     },
-
+    methods: {
+        excluirProjeto(id: string) {
+            this.store.commit(EXCLUIR_PROJETO, id)
+        }
+    },
     setup() {
         const store = useStore()
         return {
-            projetos: computed(() => store.state.projetos)
+            projetos: computed(() => store.state.projetos),
+            store
         }
     }
 })
