@@ -1,9 +1,19 @@
 <template>
     <div class="box formulario">
         <div class="columns">
-            <div class="column is-7" role="form" aria-label="Formulário para criação de uma nova tarefa">
+            <div class="column is-5" role="form" aria-label="Formulário para criação de uma nova tarefa">
                 <input type="text" class="input" placeholder="Qual tarefa você deseja iniciar?"
                           v-model="descricao_tarefa">
+            </div>
+            <div class="column is-3">
+                <div class="select">
+                    <select v-model="idProjeto">
+                        <option value="">Selecione o projeto</option>
+                        <option :value="projeto.id" v-for="projeto in projetos" :key="projeto.id">
+                            {{ projeto.nome }}
+                        </option>
+                    </select>
+                </div>
             </div>
             <div class="column">
                 <meu-temporizador @ao-temporizador-finalizado="finalizarTarefa"></meu-temporizador>
@@ -14,7 +24,9 @@
 
 <script lang="ts">
 import ITarefa from '@/interfaces/ITarefa';
-import { defineComponent, PropType } from 'vue';
+import { key } from '@/store';
+import { defineComponent, PropType, computed } from 'vue';
+import { useStore } from 'vuex';
 import Temporizador from './Temporizador.vue'
 export default defineComponent({
     props: {
@@ -25,6 +37,7 @@ export default defineComponent({
     data() {
         return {
             descricao_tarefa: '',
+            idProjeto: ''
         }
     },
     emits: ['aoSalvarTarefa'],
@@ -35,11 +48,18 @@ export default defineComponent({
         finalizarTarefa(tempoDecorrido: number): void {
             this.$emit('aoSalvarTarefa', {
                 duracaoEmSegundos: tempoDecorrido,
-                descricao: this.descricao_tarefa
+                descricao: this.descricao_tarefa,
+                projeto: this.projetos.find(proj => proj.id = this.idProjeto)
             })
             this.descricao_tarefa = '';
         }
     },
+    setup() {
+        const store = useStore(key)
+        return {
+            projetos: computed(() => store.state.projetos)
+        }
+    }
 })
 </script>
 
