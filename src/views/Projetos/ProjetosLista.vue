@@ -39,7 +39,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store';
-import { EXCLUIR_PROJETO } from '@/store/tipoMutacoes';
+import { EXCLUIR_PROJETO } from '@/store/mutacoes/tipoMutacoes';
 import { RouterLink } from 'vue-router';
 export default defineComponent({
     name: 'ProjetosLista',
