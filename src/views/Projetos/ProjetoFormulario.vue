@@ -1,8 +1,8 @@
 <template>
-    <section class="projetos">
+    <section>
         <form @submit.prevent="salvarProjeto">
             <div class="field">
-                <label class="label" for="nome">Projeto</label>
+                <label class="label" for="nome">Novo projeto</label>
                 <input id="nome" v-model="nome_projeto" class="input" placeholder="Novo projeto" type="text">
             </div>
             <div class="field">
