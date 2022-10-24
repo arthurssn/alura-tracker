@@ -43,7 +43,6 @@ export default defineComponent({
             this.cronometroAtivo = true;
             this.cronometro = setInterval(() => {
                 this.tempoEmSegundos += 1;
-                console.log(this.tempoEmSegundos)
             }, 1000)
         },
         pausar(): void {
