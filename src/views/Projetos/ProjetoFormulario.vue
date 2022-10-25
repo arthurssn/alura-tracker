@@ -20,10 +20,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useStore } from '@/store';
-import { ADICIONA_PROJETO, ALTERA_PROJETO } from '@/store/mutacoes/tipoMutacoes';
 import { RouterLink } from 'vue-router';
 import { TipoNotificacao } from '@/enums/TipoNotificacao';
 import { useNotificar } from '@/hooks/notificador'
+import { ALTERAR_PROJETO, CADASTRAR_PROJETO } from '@/store/acoes/tipoAcoes';
 
 export default defineComponent({
     name: 'ProjetoFormulario',
@@ -39,20 +39,23 @@ export default defineComponent({
     },
     mounted() {
         if (this.id) {
-            const projeto = this.store.state.projetos.find(projeto => projeto.id === this.id);
+            const projeto = this.store.state.projetos.find(projeto => projeto.id == this.id);
             this.nome_projeto = projeto?.nome || '';
         }
     },
     methods: {
         salvarProjeto(): void {
             if (this.id) {
-                this.store.commit(ALTERA_PROJETO, {
+                this.store.dispatch(ALTERAR_PROJETO, {
                     id: this.id,
                     nome: this.nome_projeto
-                })
+                }).then(() => this.lidaComSucesso())
             } else {
-                this.store.commit(ADICIONA_PROJETO, this.nome_projeto)
+                this.store.dispatch(CADASTRAR_PROJETO, this.nome_projeto)
+                    .then(() => this.lidaComSucesso())
             }
+        },
+        lidaComSucesso() {
             this.nome_projeto = '';
             this.$router.push({ name: 'projetos' })
             this.notificar_usuario(
@@ -60,7 +63,7 @@ export default defineComponent({
                 'Tudo certo',
                 'Projeto adicionado com sucesso!'
             );
-        },
+        }
     },
     setup() {
         const store = useStore();

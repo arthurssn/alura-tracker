@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import BarraLateral from './components/BarraLateral.vue';
+import BarraLateral from './layout/BarraLateral.vue';
 import ITarefa from './interfaces/ITarefa'
 import Notificacoes from '@/components/shared/Notificacoes.vue';
 export default defineComponent({

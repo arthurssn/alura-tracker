@@ -1,9 +1,22 @@
 {
-    "projetos": [
-        {
-            "id": 1,
-            "nome": "Alura Tracker"
-        }
-    ],
-    "tarefas": []
+  "projetos": [
+    {
+      "nome": "Formação front-end",
+      "id": 6
+    }
+  ],
+  "tarefas": [
+    {
+      "id": 1,
+      "descricao": "Vue.js 3",
+      "duracaoEmSegundos": 50000,
+      "projeto": {
+        "nome": "Formação front-end",
+        "id": 6
+      }
+    },
+    {
+      "id": 2
+    }
+  ]
 }

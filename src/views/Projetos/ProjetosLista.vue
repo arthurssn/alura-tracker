@@ -39,9 +39,8 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store';
-import { EXCLUIR_PROJETO } from '@/store/mutacoes/tipoMutacoes';
 import { RouterLink } from 'vue-router';
-import { OBTER_PROJETOS } from '@/store/acoes/tipoAcoes';
+import { OBTER_PROJETOS, REMOVER_PROJETO } from '@/store/acoes/tipoAcoes';
 export default defineComponent({
     name: 'ProjetosLista',
     data() {
@@ -51,7 +50,7 @@ export default defineComponent({
     },
     methods: {
         excluirProjeto(id: string) {
-            this.store.commit(EXCLUIR_PROJETO, id)
+            this.store.dispatch(REMOVER_PROJETO, id)
         }
     },
     setup() {

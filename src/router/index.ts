@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Tarefas from '../views/Tarefas.vue'
-import Projetos from '../views/Projetos.vue'
+import Tarefas from '../views/Tarefas/Index.vue'
+import Projetos from '../views/Projetos/Index.vue'
 import ProjetosLista from '../views/Projetos/ProjetosLista.vue'
 import ProjetoFormulario from '../views/Projetos/ProjetoFormulario.vue'
 

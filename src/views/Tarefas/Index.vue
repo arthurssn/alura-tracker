@@ -16,18 +16,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import FormularioControle from '../components/FormularioControle.vue';
-import Tarefa from '../components/Tarefa.vue';
-import Box from '../components/Box.vue';
-import ITarefa from '../interfaces/ITarefa'
+import { computed, defineComponent } from 'vue';
+import FormularioControle from './components/FormularioControle.vue';
+import Tarefa from './components/Tarefa.vue';
+import Box from '../../components/shared/Box.vue';
+import ITarefa from '../../interfaces/ITarefa'
+import { useStore } from '@/store';
+import { OBTER_TAREFAS } from '@/store/acoes/tipoAcoes';
 
 export default defineComponent({
     name: 'App',
 
     data() {
         return {
-            tarefas: [] as ITarefa[],
             tema: ''
         }
     },
@@ -46,6 +47,13 @@ export default defineComponent({
         alterarTema(temaEscuro: boolean): void {
             temaEscuro ? this.tema = 'modo-escuro' : this.tema = '';
         },
+    },
+    setup() {
+        const store = useStore()
+        store.dispatch(OBTER_TAREFAS)
+        return {
+            tarefas: computed(() => store.state.tarefas)
+        }
     },
 });
 </script>

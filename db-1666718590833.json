@@ -1,0 +1,21 @@
+{
+  "projetos": [
+    {
+      "id": 1,
+      "nome": "Alura Tracker"
+    },
+    {
+      "nome": "Java + Spring Boot",
+      "id": 2
+    },
+    {
+      "nome": "Ruby ",
+      "id": 3
+    },
+    {
+      "nome": "Java",
+      "id": 4
+    }
+  ],
+  "tarefas": []
+}
