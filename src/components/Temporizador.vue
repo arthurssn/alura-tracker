@@ -1,5 +1,13 @@
 <template>
     <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <div class="select">
+            <select v-model="idProjeto">
+                <option value="">Selecione o projeto</option>
+                <option :value="projeto.id" v-for="projeto in projetos" :key="projeto.id">
+                    {{ projeto.nome }}
+                </option>
+            </select>
+        </div>
         <vue-cronometro :tempoEmSegundos="tempoEmSegundos"></vue-cronometro>
         <button class="button" @click="iniciar()" :disabled="cronometroAtivo">
             <span class="icon">
@@ -23,14 +31,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
+import { useStore } from 'vuex';
+import { key, store } from '@/store'
 import Cronometro from './Cronometro.vue';
+import { TipoNotificacao } from '@/enums/TipoNotificacao';
+import { INotificacao } from '@/interfaces/INotificacao';
+import { NOTIFICAR_USUARIO } from '@/store/mutacoes/tipoMutacoes';
 export default defineComponent({
     data() {
         return {
             tempoEmSegundos: 0,
             cronometro: 0,
             cronometroAtivo: false,
+            idProjeto: ''
         }
     },
     emits: ['aoTemporizadorFinalizado'],
@@ -40,10 +54,19 @@ export default defineComponent({
     methods: {
 
         iniciar(): void {
-            this.cronometroAtivo = true;
-            this.cronometro = setInterval(() => {
-                this.tempoEmSegundos += 1;
-            }, 1000)
+            const projeto = this.projetos.find(proj => proj.id == this.idProjeto) || null
+            if (!projeto) {
+                store.commit(NOTIFICAR_USUARIO, {
+                    titulo: 'Ocorreu um erro!',
+                    texto: 'Você precisa vincular a tarefa a algum projeto',
+                    tipo: TipoNotificacao.ATENCAO
+                } as INotificacao)
+            } else {
+                this.cronometroAtivo = true;
+                this.cronometro = setInterval(() => {
+                    this.tempoEmSegundos += 1;
+                }, 1000)
+            }
         },
         pausar(): void {
             this.cronometroAtivo = false
@@ -54,6 +77,12 @@ export default defineComponent({
             this.$emit('aoTemporizadorFinalizado', this.tempoEmSegundos);
             this.tempoEmSegundos = 0;
         },
+    },
+    setup() {
+        const store = useStore(key)
+        return {
+            projetos: computed(() => store.state.projetos)
+        }
     }
 })
 </script>

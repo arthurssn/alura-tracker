@@ -5,16 +5,6 @@
                 <input type="text" class="input" placeholder="Qual tarefa você deseja iniciar?"
                           v-model="descricao_tarefa">
             </div>
-            <div class="column is-3">
-                <div class="select">
-                    <select v-model="idProjeto">
-                        <option value="">Selecione o projeto</option>
-                        <option :value="projeto.id" v-for="projeto in projetos" :key="projeto.id">
-                            {{ projeto.nome }}
-                        </option>
-                    </select>
-                </div>
-            </div>
             <div class="column">
                 <meu-temporizador @ao-temporizador-finalizado="finalizarTarefa"></meu-temporizador>
             </div>
@@ -45,11 +35,11 @@ export default defineComponent({
         'meu-temporizador': Temporizador
     },
     methods: {
-        finalizarTarefa(tempoDecorrido: number): void {
+        finalizarTarefa(tempoDecorrido: number) {
             this.$emit('aoSalvarTarefa', {
                 duracaoEmSegundos: tempoDecorrido,
                 descricao: this.descricao_tarefa,
-                projeto: this.projetos.find(proj => proj.id = this.idProjeto)
+                projeto: this.projetos.find(proj => proj.id == this.idProjeto)
             })
             this.descricao_tarefa = '';
         }
