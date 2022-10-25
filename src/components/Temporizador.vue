@@ -38,7 +38,8 @@ import Cronometro from './Cronometro.vue';
 import { TipoNotificacao } from '@/enums/TipoNotificacao';
 import { INotificacao } from '@/interfaces/INotificacao';
 import { NOTIFICAR_USUARIO } from '@/store/mutacoes/tipoMutacoes';
-import useNotificar from '@/hooks/notificador'
+// import useNotificar from '@/hooks/notificador'
+import { useNotificar } from '@/hooks/notificador';
 export default defineComponent({
     data() {
         return {
@@ -57,7 +58,7 @@ export default defineComponent({
         iniciar(): void {
             const projeto = this.projetos.find(proj => proj.id == this.idProjeto) || null
             if (!projeto) {
-                this.notificar(
+                this.notificar_usuario(
                     TipoNotificacao.ATENCAO,
                     'Ocorreu um erro!',
                     'Você precisa vincular a tarefa a algum projeto'
@@ -81,10 +82,10 @@ export default defineComponent({
     },
     setup() {
         const store = useStore(key)
-        const { notificar } = useNotificar()
+        const { notificar_usuario } = useNotificar
         return {
             projetos: computed(() => store.state.projetos),
-            notificar
+            notificar_usuario
         }
     }
 })

@@ -14,9 +14,8 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
-import { store, useStore } from '@/store';
-import { EXCLUIR_NOTIFICACAO } from '@/store/mutacoes/tipoMutacoes';
-
+import { useStore } from '@/store';
+import { useNotificar } from '@/hooks/notificador';
 export default defineComponent({
     name: 'Notificacoes',
     data() {
@@ -26,13 +25,15 @@ export default defineComponent({
     },
     methods: {
         excluirNotificacao(id: number) {
-            store.commit(EXCLUIR_NOTIFICACAO, id)
+            this.excluir_notificacao(id)
         }
     },
     setup() {
         const store = useStore()
+        const { excluir_notificacao } = useNotificar
         return {
-            notificacoes: computed(() => store.state.notificacoes)
+            notificacoes: computed(() => store.state.notificacoes),
+            excluir_notificacao
         }
     },
 })

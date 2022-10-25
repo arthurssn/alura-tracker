@@ -23,7 +23,7 @@ import { useStore } from '@/store';
 import { ADICIONA_PROJETO, ALTERA_PROJETO } from '@/store/mutacoes/tipoMutacoes';
 import { RouterLink } from 'vue-router';
 import { TipoNotificacao } from '@/enums/TipoNotificacao';
-import useNotificar from '@/hooks/notificador'
+import { useNotificar } from '@/hooks/notificador'
 
 export default defineComponent({
     name: 'ProjetoFormulario',
@@ -55,7 +55,7 @@ export default defineComponent({
             }
             this.nome_projeto = '';
             this.$router.push({ name: 'projetos' })
-            this.notificar(
+            this.notificar_usuario(
                 TipoNotificacao.SUCESSO,
                 'Tudo certo',
                 'Projeto adicionado com sucesso!'
@@ -64,10 +64,10 @@ export default defineComponent({
     },
     setup() {
         const store = useStore();
-        const { notificar } = useNotificar();
+        const { notificar_usuario } = useNotificar;
         return {
             store,
-            notificar
+            notificar_usuario
         }
     }
 })
