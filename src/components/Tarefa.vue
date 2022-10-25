@@ -1,7 +1,10 @@
 <template>
     <div class="columns is-flex is-align-items-center">
-        <div class="column is-7">
-            {{tarefa.descricao || 'Tarefa sem descrição'}}
+        <div class="column is-4">
+            {{ tarefa.descricao || 'Tarefa sem descrição' }}
+        </div>
+        <div class="column is-3">
+            {{ tarefa.projeto?.nome || 'Tarefa sem projeto' }}
         </div>
         <div class="column">
             <vue-cronometro :tempoEmSegundos="tarefa.duracaoEmSegundos"></vue-cronometro>
