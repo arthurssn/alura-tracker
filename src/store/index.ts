@@ -40,7 +40,7 @@ export const store = createStore<Estado>({
 
             setTimeout(() => {
                 store.commit(EXCLUIR_NOTIFICACAO, notificacao.id)
-            }, 5000);
+            }, 3000);
         },
 
         [EXCLUIR_NOTIFICACAO](state, id) {
