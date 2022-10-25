@@ -6,15 +6,17 @@
                           v-model="descricao_tarefa">
             </div>
             <div class="column">
-                <meu-temporizador @ao-temporizador-finalizado="finalizarTarefa"></meu-temporizador>
+                <meu-temporizador @aoTemporizadorFinalizado="finalizarTarefa"></meu-temporizador>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
+import IProjeto from '@/interfaces/IProjeto';
 import ITarefa from '@/interfaces/ITarefa';
-import { key } from '@/store';
+import { key, store } from '@/store';
+import { CADASTRAR_TAREFA } from '@/store/acoes/tipoAcoes';
 import { defineComponent, PropType, computed } from 'vue';
 import { useStore } from 'vuex';
 import Temporizador from './Temporizador.vue'
@@ -35,12 +37,12 @@ export default defineComponent({
         'meu-temporizador': Temporizador
     },
     methods: {
-        finalizarTarefa(tempoDecorrido: number) {
-            this.$emit('aoSalvarTarefa', {
-                duracaoEmSegundos: tempoDecorrido,
+        finalizarTarefa(tempoDecorrido: number, projeto: IProjeto) {
+            store.dispatch(CADASTRAR_TAREFA, {
                 descricao: this.descricao_tarefa,
-                projeto: this.projetos.find(proj => proj.id == this.idProjeto)
-            })
+                duracaoEmSegundos: tempoDecorrido,
+                projeto: projeto
+            } as ITarefa)
             this.descricao_tarefa = '';
         }
     },

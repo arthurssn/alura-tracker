@@ -31,10 +31,6 @@ export default defineComponent({
     },
 
     methods: {
-        salvarTarefa(tarefa: ITarefa): void {
-            this.tarefas.push(tarefa)
-        },
-
         alterarTema(temaEscuro: boolean): void {
             temaEscuro ? this.tema = 'modo-escuro' : this.tema = '';
         },

@@ -22,7 +22,7 @@ import Tarefa from './components/Tarefa.vue';
 import Box from '../../components/shared/Box.vue';
 import ITarefa from '../../interfaces/ITarefa'
 import { useStore } from '@/store';
-import { OBTER_TAREFAS } from '@/store/acoes/tipoAcoes';
+import { OBTER_PROJETOS, OBTER_TAREFAS } from '@/store/acoes/tipoAcoes';
 
 export default defineComponent({
     name: 'App',
@@ -51,6 +51,7 @@ export default defineComponent({
     setup() {
         const store = useStore()
         store.dispatch(OBTER_TAREFAS)
+        store.dispatch(OBTER_PROJETOS)
         return {
             tarefas: computed(() => store.state.tarefas)
         }

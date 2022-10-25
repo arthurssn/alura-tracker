@@ -3,6 +3,7 @@ import { createStore, Store, useStore as vuexUseStore } from "vuex";
 import { InjectionKey } from "vue";
 import {
     ADICIONA_PROJETO,
+    ADICIONA_TAREFA,
     ALTERA_PROJETO,
     DEFINIR_PROJETOS,
     DEFINIR_TAREFAS,
@@ -68,6 +69,10 @@ export const store = createStore<Estado>({
             state.tarefas = tarefas
         },
 
+        [ADICIONA_TAREFA](state, tarefa: ITarefa) {
+            state.tarefas.push(tarefa)
+        }
+
     },
 
     actions: {
@@ -98,9 +103,10 @@ export const store = createStore<Estado>({
                     commit(DEFINIR_TAREFAS, response.data)
                 })
         },
-        [CADASTRAR_TAREFA](state, tarefa: ITarefa) {
-            return http.post('/tarefas', {
-                tarefa
+        [CADASTRAR_TAREFA]({ commit }, tarefa: ITarefa) {
+            return http.post('/tarefas', tarefa
+            ).then(response => {
+                commit(ADICIONA_TAREFA, response.data)
             })
         },
     }

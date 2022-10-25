@@ -21,6 +21,7 @@
             </span>
             <span>Pause</span>
         </button>
+        <!-- <button class="button" @click="finalizar()" :disabled="tempoEmSegundos == 0"> -->
         <button class="button" @click="finalizar()">
             <span class="icon">
                 <i class="fas fa-stop"></i>
@@ -33,12 +34,9 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
-import { key, store } from '@/store'
+import { key } from '@/store'
 import Cronometro from './Cronometro.vue';
 import { TipoNotificacao } from '@/enums/TipoNotificacao';
-import { INotificacao } from '@/interfaces/INotificacao';
-import { NOTIFICAR_USUARIO } from '@/store/mutacoes/tipoMutacoes';
-// import useNotificar from '@/hooks/notificador'
 import { useNotificar } from '@/hooks/notificador';
 export default defineComponent({
     data() {
@@ -76,8 +74,13 @@ export default defineComponent({
         },
         finalizar(): void {
             this.pausar()
-            this.$emit('aoTemporizadorFinalizado', this.tempoEmSegundos);
+            const projeto = this.projetos.find(proj => proj.id == this.idProjeto) || null
+            this.$emit('aoTemporizadorFinalizado',
+                this.tempoEmSegundos,
+                projeto
+            )
             this.tempoEmSegundos = 0;
+            this.idProjeto = '';
         },
     },
     setup() {

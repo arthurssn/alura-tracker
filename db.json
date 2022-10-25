@@ -1,22 +1,54 @@
 {
   "projetos": [
     {
-      "nome": "Formação front-end",
+      "nome": "Formação Front-end",
       "id": 6
+    },
+    {
+      "nome": "Java",
+      "id": 7
+    },
+    {
+      "nome": "Estudar devOps",
+      "id": 8
     }
   ],
   "tarefas": [
     {
       "id": 1,
       "descricao": "Vue.js 3",
-      "duracaoEmSegundos": 50000,
+      "duracaoEmSegundos": 5025,
       "projeto": {
         "nome": "Formação front-end",
         "id": 6
       }
     },
     {
-      "id": 2
+      "descricao": "Estudar Nuxt.js",
+      "duracaoEmSegundos": 5025,
+      "projeto": {
+        "nome": "Formação front-end",
+        "id": 6
+      },
+      "id": 3
+    },
+    {
+      "descricao": "Estudar fundamentos de POO",
+      "duracaoEmSegundos": 5025,
+      "projeto": {
+        "nome": "Java",
+        "id": 7
+      },
+      "id": 4
+    },
+    {
+      "descricao": "Estudar Docker",
+      "duracaoEmSegundos": 5025,
+      "projeto": {
+        "nome": "Estudar devOps",
+        "id": 8
+      },
+      "id": 5
     }
   ]
 }
