@@ -20,10 +20,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useStore } from '@/store';
-import { ADICIONA_PROJETO, ALTERA_PROJETO, NOTIFICAR_USUARIO } from '@/store/mutacoes/tipoMutacoes';
+import { ADICIONA_PROJETO, ALTERA_PROJETO } from '@/store/mutacoes/tipoMutacoes';
 import { RouterLink } from 'vue-router';
-import { INotificacao } from '@/interfaces/INotificacao';
 import { TipoNotificacao } from '@/enums/TipoNotificacao';
+import useNotificar from '@/hooks/notificador'
 
 export default defineComponent({
     name: 'ProjetoFormulario',
@@ -53,19 +53,21 @@ export default defineComponent({
             } else {
                 this.store.commit(ADICIONA_PROJETO, this.nome_projeto)
             }
-            this.store.commit(NOTIFICAR_USUARIO, {
-                titulo: 'Tudo certo!',
-                texto: 'Projeto salvo com sucesso',
-                tipo: TipoNotificacao.SUCESSO
-            } as INotificacao)
             this.nome_projeto = '';
             this.$router.push({ name: 'projetos' })
-        }
+            this.notificar(
+                TipoNotificacao.SUCESSO,
+                'Tudo certo',
+                'Projeto adicionado com sucesso!'
+            );
+        },
     },
     setup() {
-        const store = useStore()
+        const store = useStore();
+        const { notificar } = useNotificar();
         return {
-            store
+            store,
+            notificar
         }
     }
 })
