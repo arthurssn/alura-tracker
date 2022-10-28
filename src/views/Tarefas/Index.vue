@@ -1,7 +1,7 @@
 <template>
     <formulario-controle @aoSalvarTarefa="salvarTarefa"></formulario-controle>
     <div class="lista">
-        <div v-if="tarefas.length > 0">
+        <div v-if="tarefas">
             <vue-box v-for="(tarefa, index) in tarefas" :key="index">
                 <vue-tarefa :tarefa="tarefa" @aoTarefaClicada="selecionarTarefa">
                 </vue-tarefa>
