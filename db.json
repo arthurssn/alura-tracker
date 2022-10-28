@@ -16,7 +16,7 @@
   "tarefas": [
     {
       "id": 1,
-      "descricao": "Vue.js 3",
+      "descricao": "Vue.js 3 :)",
       "duracaoEmSegundos": 5025,
       "projeto": {
         "nome": "Formação front-end",

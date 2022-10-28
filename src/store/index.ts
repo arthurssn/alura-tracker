@@ -4,6 +4,7 @@ import { InjectionKey } from "vue";
 import {
     ADICIONA_PROJETO,
     ADICIONA_TAREFA,
+    ALTERA_TAREFA,
     ALTERA_PROJETO,
     DEFINIR_PROJETOS,
     DEFINIR_TAREFAS,
@@ -12,7 +13,7 @@ import {
     NOTIFICAR_USUARIO
 } from "./mutacoes/tipoMutacoes";
 import { INotificacao } from "@/interfaces/INotificacao";
-import { ALTERAR_PROJETO, CADASTRAR_PROJETO, CADASTRAR_TAREFA, OBTER_PROJETOS, OBTER_TAREFAS, REMOVER_PROJETO } from "./acoes/tipoAcoes";
+import { ALTERAR_PROJETO, ALTERAR_TAREFA, CADASTRAR_PROJETO, CADASTRAR_TAREFA, OBTER_PROJETOS, OBTER_TAREFAS, REMOVER_PROJETO } from "./acoes/tipoAcoes";
 import http from "@/http";
 import ITarefa from "@/interfaces/ITarefa";
 
@@ -71,6 +72,11 @@ export const store = createStore<Estado>({
 
         [ADICIONA_TAREFA](state, tarefa: ITarefa) {
             state.tarefas.push(tarefa)
+        },
+
+        [ALTERA_TAREFA](state, tarefa: ITarefa) {
+            const index = state.tarefas.findIndex(tar => tar.id = tarefa.id)
+            state.tarefas[index] = tarefa
         }
 
     },
@@ -104,11 +110,17 @@ export const store = createStore<Estado>({
                 })
         },
         [CADASTRAR_TAREFA]({ commit }, tarefa: ITarefa) {
-            return http.post('/tarefas', tarefa
-            ).then(response => {
-                commit(ADICIONA_TAREFA, response.data)
-            })
+            return http.post('/tarefas', tarefa)
+                .then(response => {
+                    commit(ADICIONA_TAREFA, response.data)
+                })
         },
+        [ALTERAR_TAREFA]({ commit }, tarefa: ITarefa) {
+            return http.put(`/tarefas/${tarefa.id}`, tarefa)
+                .then(() => {
+                    commit(ALTERA_TAREFA, tarefa)
+                })
+        }
     }
 })
 

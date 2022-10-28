@@ -1,5 +1,5 @@
 <template>
-    <div class="columns is-flex is-align-items-center">
+    <div class="columns is-flex is-align-items-center is-clickable" @click="tarefaClicada">
         <div class="column is-4">
             {{ tarefa.descricao || 'Tarefa sem descrição' }}
         </div>
@@ -15,8 +15,9 @@
 <script lang="ts">
 import ITarefa from '@/interfaces/ITarefa';
 import Cronometro from './Cronometro.vue';
-import { PropType } from 'vue';
-export default {
+import { PropType, defineComponent } from 'vue';
+
+export default defineComponent({
     props: {
         tarefa: {
             type: Object as PropType<ITarefa>,
@@ -25,6 +26,13 @@ export default {
     },
     components: {
         'vue-cronometro': Cronometro,
-    }
-}
+    },
+    emits: ['aoTarefaClicada'],
+    methods: {
+        tarefaClicada(): void {
+            this.$emit('aoTarefaClicada', this.tarefa)
+        }
+    },
+})
+
 </script>
