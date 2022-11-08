@@ -72,7 +72,6 @@ export default defineComponent({
             temaEscuro ? this.tema = 'modo-escuro' : this.tema = '';
         },
         selecionarTarefa(tarefa: ITarefa): void {
-            console.log('tarefa', tarefa)
             this.tarefaSelecionada = tarefa
         },
         fecharModal(): void {

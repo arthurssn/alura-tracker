@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useStore } from '@/store';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { TipoNotificacao } from '@/enums/TipoNotificacao';
 import { useNotificar } from '@/hooks/notificador'
 import { ALTERAR_PROJETO, CADASTRAR_PROJETO } from '@/store/acoes/tipoAcoes';
@@ -32,52 +32,46 @@ export default defineComponent({
             type: String
         }
     },
-    data() {
-        return {
-            nome_projeto: '',
+
+    setup(props) {
+        const router = useRouter();
+        const store = useStore();
+        const { notificar_usuario } = useNotificar;
+        const nome_projeto = ref("")
+
+        if (props.id) {
+            const projeto = store.state.projeto.projetos.find(proj => proj.id == props.id);
+            nome_projeto.value = projeto?.nome || "";
         }
-    },
-    mounted() {
-        if (this.id) {
-            const projeto = this.store.state.projeto.projetos.find(projeto => projeto.id == this.id);
-            this.nome_projeto = projeto?.nome || '';
-        }
-    },
-    methods: {
-        salvarProjeto(): void {
-            if (this.id) {
-                this.store.dispatch(ALTERAR_PROJETO, {
-                    id: this.id,
-                    nome: this.nome_projeto
-                }).then(() => this.lidaComSucesso())
+
+        const salvarProjeto = (): void => {
+            if (props.id) {
+                store.dispatch(ALTERAR_PROJETO, {
+                    id: props.id,
+                    nome: nome_projeto.value
+                }).then(() => lidaComSucesso())
             } else {
-                this.store.dispatch(CADASTRAR_PROJETO, this.nome_projeto)
-                    .then(() => this.lidaComSucesso())
+                store.dispatch(CADASTRAR_PROJETO, nome_projeto.value)
+                    .then(() => lidaComSucesso())
             }
-        },
-        lidaComSucesso() {
-            this.nome_projeto = '';
-            this.$router.push({ name: 'projetos' })
-            this.notificar_usuario(
+        }
+
+        const lidaComSucesso = (): void => {
+            nome_projeto.value = '';
+
+            router.push({ name: 'projetos' })
+
+            notificar_usuario(
                 TipoNotificacao.SUCESSO,
                 'Tudo certo',
                 'Projeto adicionado com sucesso!'
             );
         }
-    },
-    setup() {
-        const store = useStore();
-        const { notificar_usuario } = useNotificar;
+
         return {
-            store,
-            notificar_usuario
+            nome_projeto,
+            salvarProjeto
         }
     }
 })
 </script>
-
-<style scoped>
-.projetos {
-    padding: 1.25rem;
-}
-</style>
