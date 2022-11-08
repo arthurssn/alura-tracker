@@ -21,26 +21,23 @@
                     Nenhuma tarefa feita hoje
                 </div>
             </vue-box>
-            <div class="modal" :class="{ 'is-active': tarefaSelecionada }" v-if="tarefaSelecionada">
-                <div class="modal-background"></div>
-                <div class="modal-card">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">Editar tarefa</p>
-                        <button @click="fecharModal" class="delete" aria-label="close"></button>
-                    </header>
-                    <section class="modal-card-body">
-                        <div class="field">
-                            <label for="descricao_tarefa" class="label">Descrição</label>
-                            <input type="text" class="input" id="descricao_tarefa" v-model="tarefaSelecionada.descricao"
-                                      placeholder="Descrição da tarefa">
-                        </div>
-                    </section>
-                    <footer class="modal-card-foot">
-                        <button class="button is-success" @click="alterarTarefa">Salvar alterações</button>
-                        <button @click="fecharModal" class="button">Cancelar</button>
-                    </footer>
-                </div>
-            </div>
+            <modal-vue :mostrar="tarefaSelecionada != null">
+                <template v-slot:header>
+                    <p class="modal-card-title">Editar tarefa</p>
+                    <button @click="fecharModal" class="delete" aria-label="close"></button>
+                </template>
+                <template v-slot:body>
+                    <div class="field">
+                        <label for="descricao_tarefa" class="label">Descrição</label>
+                        <input type="text" class="input" id="descricao_tarefa" v-model="tarefaSelecionada.descricao"
+                                  placeholder="Descrição da tarefa">
+                    </div>
+                </template>
+                <template v-slot:footer>
+                    <button class="button is-success" @click="alterarTarefa">Salvar alterações</button>
+                    <button @click="fecharModal" class="button">Cancelar</button>
+                </template>
+            </modal-vue>
         </div>
     </div>
 </template>
@@ -53,6 +50,7 @@ import Box from '../../components/shared/Box.vue';
 import ITarefa from '../../interfaces/ITarefa'
 import { useStore } from '@/store';
 import { ALTERAR_TAREFA, OBTER_PROJETOS, OBTER_TAREFAS } from '@/store/acoes/tipoAcoes';
+import Modal from '@/components/shared/Modal.vue';
 
 export default defineComponent({
     name: 'App',
@@ -67,7 +65,8 @@ export default defineComponent({
     components: {
         "formulario-controle": FormularioControle,
         "vue-tarefa": Tarefa,
-        'vue-box': Box
+        'vue-box': Box,
+        'modal-vue': Modal
     },
 
     methods: {
