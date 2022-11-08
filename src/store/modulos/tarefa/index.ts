@@ -26,8 +26,14 @@ export const tarefa: Module<EstadoTarefa, Estado> = {
     },
 
     actions: {
-        [OBTER_TAREFAS]({ commit }) {
-            return http.get('/tarefas')
+        [OBTER_TAREFAS]({ commit }, filtro) {
+            const url = '/tarefas'
+            const params = new URLSearchParams()
+            if (filtro) {
+                params.append('descricao', filtro)
+            }
+
+            return http.get(url, { params })
                 .then(response => {
                     commit(DEFINIR_TAREFAS, response.data)
                 })
