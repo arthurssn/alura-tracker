@@ -1,5 +1,5 @@
 <template>
-    <formulario-controle @aoSalvarTarefa="salvarTarefa"></formulario-controle>
+    <formulario-controle></formulario-controle>
     <div class="lista">
         <div v-if="tarefas">
             <vue-box v-for="(tarefa, index) in tarefas" :key="index">
@@ -61,9 +61,6 @@ export default defineComponent({
     },
 
     methods: {
-        salvarTarefa(tarefa: ITarefa): void {
-            this.tarefas.push(tarefa)
-        },
         alterarTarefa() {
             this.store.dispatch(ALTERAR_TAREFA, this.tarefaSelecionada)
                 .finally(() => this.fecharModal())

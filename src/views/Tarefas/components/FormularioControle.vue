@@ -15,41 +15,35 @@
 <script lang="ts">
 import IProjeto from '@/interfaces/IProjeto';
 import ITarefa from '@/interfaces/ITarefa';
-import { key, store } from '@/store';
+import { key } from '@/store';
 import { CADASTRAR_TAREFA } from '@/store/acoes/tipoAcoes';
-import { defineComponent, PropType, computed } from 'vue';
+import { defineComponent, PropType, computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import Temporizador from './Temporizador.vue'
 export default defineComponent({
-    props: {
-        tarefa: {
-            type: Object as PropType<ITarefa>
-        }
-    },
-    data() {
-        return {
-            descricao_tarefa: '',
-            idProjeto: ''
-        }
-    },
-    emits: ['aoSalvarTarefa'],
     components: {
         'meu-temporizador': Temporizador
     },
-    methods: {
-        finalizarTarefa(tempoDecorrido: number, projeto: IProjeto) {
+
+    setup() {
+        const store = useStore(key)
+        const descricao_tarefa = ref("")
+        const idProjeto = ref("")
+
+        const finalizarTarefa = (tempoDecorrido: number, projeto: IProjeto): void => {
             store.dispatch(CADASTRAR_TAREFA, {
-                descricao: this.descricao_tarefa,
+                descricao: descricao_tarefa.value,
                 duracaoEmSegundos: tempoDecorrido,
                 projeto: projeto
             } as ITarefa)
-            this.descricao_tarefa = '';
+            descricao_tarefa.value = '';
         }
-    },
-    setup() {
-        const store = useStore(key)
+
         return {
-            projetos: computed(() => store.state.projeto.projetos)
+            projetos: computed(() => store.state.projeto.projetos),
+            descricao_tarefa,
+            idProjeto,
+            finalizarTarefa
         }
     }
 })
