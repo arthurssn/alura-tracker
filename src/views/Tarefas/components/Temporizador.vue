@@ -37,6 +37,7 @@ import { key } from '@/store'
 import Cronometro from './Cronometro.vue';
 import { TipoNotificacao } from '@/enums/TipoNotificacao';
 import { useNotificar } from '@/hooks/notificador';
+import IProjeto from '@/interfaces/IProjeto';
 export default defineComponent({
 
     components: {
@@ -55,19 +56,31 @@ export default defineComponent({
         const idCronometro = ref(0);
         const tempoEmSegundos = ref(0);
 
+        const retornaProjetoSelecionado = () => {
+            return projetos.value.find(proj => proj.id == idProjeto.value) || null
+        }
+
+        const existeProjetoVinculado = () => {
+            const atualProjeto = retornaProjetoSelecionado()
+            return !!atualProjeto;
+        }
+
+        const alertaQueNaoHaProjeto = (): void => {
+            notificar_usuario(
+                TipoNotificacao.ATENCAO,
+                'Ocorreu um erro!',
+                'Você precisa vincular a tarefa a algum projeto'
+            );
+        }
+
         const iniciarCronometro = (): void => {
-            const projeto = projetos.value.find(proj => proj.id == idProjeto.value) || null
-            if (!projeto) {
-                notificar_usuario(
-                    TipoNotificacao.ATENCAO,
-                    'Ocorreu um erro!',
-                    'Você precisa vincular a tarefa a algum projeto'
-                );
-            } else {
+            if (existeProjetoVinculado()) {
                 cronometroEstaAtivo.value = true;
                 idCronometro.value = setInterval(() => {
                     tempoEmSegundos.value += 1;
                 }, 1000)
+            } else {
+                alertaQueNaoHaProjeto();
             }
         }
 
@@ -77,14 +90,18 @@ export default defineComponent({
         }
 
         const finalizarCronometro = (): void => {
-            pausarCronometro();
-            const projeto = projetos.value.find(proj => proj.id == idProjeto.value) || null
-            emit('aoTemporizadorFinalizado',
-                tempoEmSegundos,
-                projeto
-            )
-            tempoEmSegundos.value = 0;
-            idProjeto.value = '';
+            if (existeProjetoVinculado()) {
+                pausarCronometro();
+                const atualProjeto = retornaProjetoSelecionado();
+                emit('aoTemporizadorFinalizado',
+                    tempoEmSegundos.value,
+                    atualProjeto
+                )
+                tempoEmSegundos.value = 0;
+                idProjeto.value = '';
+            } else {
+                alertaQueNaoHaProjeto();
+            }
         }
 
         return {
