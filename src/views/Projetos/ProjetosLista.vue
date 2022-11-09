@@ -41,24 +41,21 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store';
 import { RouterLink } from 'vue-router';
 import { OBTER_PROJETOS, REMOVER_PROJETO } from '@/store/acoes/tipoAcoes';
+
 export default defineComponent({
     name: 'ProjetosLista',
-    data() {
-        return {
-            nome_projeto: '',
-        }
-    },
-    methods: {
-        excluirProjeto(id: string) {
-            this.store.dispatch(REMOVER_PROJETO, id)
-        }
-    },
     setup() {
         const store = useStore()
         store.dispatch(OBTER_PROJETOS)
+
+        const excluirProjeto = (id: string) => {
+            store.dispatch(REMOVER_PROJETO, id)
+        }
+
         return {
             projetos: computed(() => store.state.projeto.projetos),
-            store
+            store,
+            excluirProjeto
         }
     },
 })
