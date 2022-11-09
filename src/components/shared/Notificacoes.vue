@@ -18,22 +18,18 @@ import { useStore } from '@/store';
 import { useNotificar } from '@/hooks/notificador';
 export default defineComponent({
     name: 'Notificacoes',
-    data() {
-        return {
-            tipo_notificacoes: 'is-primary'
-        }
-    },
-    methods: {
-        excluirNotificacao(id: number) {
-            this.excluir_notificacao(id)
-        }
-    },
     setup() {
         const store = useStore()
         const { excluir_notificacao } = useNotificar
+
+        const excluirNotificacao = (id: number) => {
+            excluir_notificacao(id)
+        }
+
         return {
             notificacoes: computed(() => store.state.notificacoes),
-            excluir_notificacao
+            excluir_notificacao,
+            excluirNotificacao,
         }
     },
 })

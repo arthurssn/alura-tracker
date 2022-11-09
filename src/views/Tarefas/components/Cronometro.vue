@@ -2,14 +2,14 @@
     <div>
         <section>
             <strong class="cronometro">
-                {{tempoDecorrido}}
+                {{ tempoDecorrido }}
             </strong>
         </section>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
     name: 'Cronometro',
@@ -20,11 +20,13 @@ export default defineComponent({
             default: 0
         }
     },
-    computed: {
-        tempoDecorrido(): string {
-            return new Date(this.tempoEmSegundos * 1000).toISOString().substring(11, 19);
+
+    setup(props) {
+        return {
+            tempoDecorrido: computed(() => new Date(props.tempoEmSegundos * 1000).toISOString().substring(11, 19))
         }
     }
+
 })
 
 </script>

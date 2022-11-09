@@ -55,13 +55,6 @@ import Modal from '@/components/shared/Modal.vue';
 export default defineComponent({
     name: 'App',
 
-    data() {
-        return {
-            tema: '',
-            tarefaSelecionada: null as ITarefa | null
-        }
-    },
-
     components: {
         "formulario-controle": FormularioControle,
         "vue-tarefa": Tarefa,
@@ -69,27 +62,25 @@ export default defineComponent({
         'modal-vue': Modal
     },
 
-    methods: {
-        alterarTarefa() {
-            this.store.dispatch(ALTERAR_TAREFA, this.tarefaSelecionada)
-                .finally(() => this.fecharModal())
-        },
-        alterarTema(temaEscuro: boolean): void {
-            temaEscuro ? this.tema = 'modo-escuro' : this.tema = '';
-        },
-        selecionarTarefa(tarefa: ITarefa): void {
-            this.tarefaSelecionada = tarefa
-        },
-        fecharModal(): void {
-            this.tarefaSelecionada = null
-        }
-    },
     setup() {
         const store = useStore()
         store.dispatch(OBTER_TAREFAS)
         store.dispatch(OBTER_PROJETOS)
-
         const filtro = ref("");
+        let tarefaSelecionada = null as ITarefa | null;
+
+        const selecionarTarefa = (tarefa: ITarefa): void => {
+            tarefaSelecionada = tarefa
+        }
+
+        const fecharModal = (): void => {
+            tarefaSelecionada = null
+        }
+
+        const alterarTarefa = () => {
+            store.dispatch(ALTERAR_TAREFA, tarefaSelecionada)
+                .finally(() => fecharModal())
+        }
 
         watchEffect(() => {
             store.dispatch(OBTER_TAREFAS, filtro.value)
@@ -98,7 +89,11 @@ export default defineComponent({
         return {
             tarefas: computed(() => store.state.tarefa.tarefas),
             store,
-            filtro
+            filtro,
+            selecionarTarefa,
+            tarefaSelecionada,
+            fecharModal,
+            alterarTarefa
         };
     },
 });
